@@ -9,7 +9,11 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Log In">
-        <Stack.Screen name="Log In" component={LogIn} />
+        <Stack.Screen 
+          name="Log In" 
+          component={LogIn} 
+          options={{ headerShown: false }}
+        />
         <Stack.Screen name="Dashboard" component={Dashboard} />
       </Stack.Navigator>
     </NavigationContainer>

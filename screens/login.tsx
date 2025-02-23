@@ -1,7 +1,17 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, View, Text, TextInput, Keyboard, Platform, TouchableWithoutFeedback, TouchableOpacity } from "react-native";
+import { 
+    StyleSheet, 
+    View, 
+    Text, 
+    TextInput, 
+    Keyboard, 
+    Image, 
+    TouchableWithoutFeedback, 
+    TouchableOpacity, 
+    StatusBar 
+} from "react-native";
 import { useState, useEffect } from "react";
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from "react-native-reanimated";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function LogIn({ navigation }: any) {
     const [username, setUsername] = useState("");
@@ -12,7 +22,7 @@ export default function LogIn({ navigation }: any) {
 
     useEffect(() => {
         const keyboardShowListener = Keyboard.addListener("keyboardDidShow", (event) => {
-            keyboardHeight.value = withTiming(event.endCoordinates.height, { duration: 200 });
+            keyboardHeight.value = withTiming(-event.endCoordinates.height / 2, { duration: 200 });
         });
 
         const keyboardHideListener = Keyboard.addListener("keyboardDidHide", () => {
@@ -25,19 +35,36 @@ export default function LogIn({ navigation }: any) {
         };
     }, []);
 
-    // Animated style for smooth transition
+    // Animated style for smooth transition of the whole screen
     const animatedStyle = useAnimatedStyle(() => {
         return {
-            marginBottom: keyboardHeight.value,
+            transform: [{ translateY: keyboardHeight.value }],
         };
     });
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <Animated.View style={[styles.container, animatedStyle]}>
+                {/* Show the status bar but make it transparent */}
+                <StatusBar backgroundColor="transparent" translucent barStyle="dark-content" />
+
+                {/* Gradient Background */}
+                <LinearGradient 
+                    colors={["#A8CECE", "#B6B8CE"]} 
+                    style={styles.gradientBackground}
+                />
+
+                {/* White Background with rounded upper corners */}
+                <View style={styles.whiteBackground}>
+                    <View style={styles.whiteInnerBackground} />
+                </View>
+
+                {/* Overlay PNG Design */}
+                <Image source={require("../assets/logo3d.png")} style={styles.designImage} />
+
+                {/* Login Form */}
                 <View style={styles.inner}>
                     <Text style={styles.title}>Planorama</Text>
-                    <StatusBar style="auto" />
 
                     <Text style={styles.label}>Username</Text>
                     <TextInput
@@ -62,6 +89,8 @@ export default function LogIn({ navigation }: any) {
                     >
                         <Text style={styles.buttonText}>Login</Text>
                     </TouchableOpacity>
+
+                    <Text style={styles.signup}>No Account?</Text>
                 </View>
             </Animated.View>
         </TouchableWithoutFeedback>
@@ -71,20 +100,49 @@ export default function LogIn({ navigation }: any) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
-        justifyContent: "center",
         alignItems: "center",
-        padding: 20,
+        justifyContent: "center",
+    },
+    gradientBackground: {
+        position: "absolute",
+        width: "100%",
+        height: "40%", // Increased height slightly for a smoother transition
+        top: 0,
+    },
+    whiteBackground: {
+        position: "absolute",
+        width: "100%",
+        height: "70%",
+        bottom: 0,
+        backgroundColor: "transparent",
+        overflow: "hidden",
+    },
+    whiteInnerBackground: {
+        flex: 1,
+        backgroundColor: "#F5F5F5",
+        borderTopLeftRadius: 40,  // Increased rounding
+        borderTopRightRadius: 40, // Increased rounding
+    },
+    designImage: {
+        position: "absolute",
+        top: "10%", 
+        zIndex: 1,
+        width: 350,
+        height: 350,
+        resizeMode: "contain",
     },
     inner: {
         justifyContent: "center",
         alignItems: "center",
         width: "100%",
+        position: "absolute",
+        bottom: 100, 
+        zIndex: 2, 
     },
     title: {
         fontSize: 40,
         fontWeight: "bold",
-        marginBottom: 100,
+        marginBottom: 70,
     },
     label: {
         alignSelf: "flex-start",
@@ -103,15 +161,15 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     button: {
-        backgroundColor: "#007BFF", // Blue color
-        width: 180, // Button width
-        height: 50, // Button height
-        borderRadius: 25, // Circular shape
+        backgroundColor: "#007BFF",
+        width: 180,
+        height: 50,
+        borderRadius: 25,
         justifyContent: "center",
         alignItems: "center",
         marginTop: 40,
-        elevation: 5, // Android shadow
-        shadowColor: "#000", // iOS shadow
+        elevation: 5,
+        shadowColor: "#000",
         shadowOffset: { width: 2, height: 2 },
         shadowOpacity: 0.3,
         shadowRadius: 5,
@@ -120,5 +178,13 @@ const styles = StyleSheet.create({
         color: "#fff",
         fontSize: 18,
         fontWeight: "bold",
+    },
+    signup: {
+        marginTop: 10,
+        color: "#007BFF",
+        fontSize: 16,
+        fontWeight: "bold",
+        alignSelf: "center",
+        textDecorationLine: "underline",
     },
 });
