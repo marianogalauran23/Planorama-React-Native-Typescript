@@ -69,7 +69,7 @@ export default function LogIn({ navigation }: any) {
                     <Text style={styles.label}>Username</Text>
                     <TextInput
                         style={styles.input}
-                        placeholder="Enter your username"
+                        placeholder=""
                         value={username}
                         onChangeText={setUsername}
                     />
@@ -77,7 +77,7 @@ export default function LogIn({ navigation }: any) {
                     <Text style={styles.label}>Password</Text>
                     <TextInput
                         style={styles.input}
-                        placeholder="Enter your password"
+                        placeholder=""
                         value={password}
                         onChangeText={setPassword}
                         secureTextEntry={true}
