@@ -55,6 +55,14 @@ const events = [
     imageUrl:
       'https://images.unsplash.com/photo-1730035375813-88f7f26c3c82?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
   },
+  {
+    id: '5',
+    title: 'Family Reunion',
+    time: '8:00 - 12:00 pm | Apr. 25 2025',
+    location: 'The Old Mill, Los Angeles',
+    imageUrl:
+      'https://images.unsplash.com/photo-1609220136736-443140cffec6?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  },
 ];
 
 export default function Dashboard() {
