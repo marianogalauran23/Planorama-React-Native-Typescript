@@ -10,7 +10,8 @@ import {
   NativeSyntheticEvent,
   NativeScrollEvent,
   FlatList,
-  Easing, // added easing import
+  Easing,
+  StatusBar, // Import StatusBar
 } from 'react-native';
 import { BlurView } from 'expo-blur';
 import * as Haptics from 'expo-haptics';
@@ -115,9 +116,13 @@ export default function Dashboard() {
 
   return (
     <View style={styles.container}>
+      {/* Hide the status bar */}
+      <StatusBar hidden />
+
       <View>
         {/*This is where the header is*/}
       </View>
+
       {/* Background with fade transition */}
       <Animated.View style={[StyleSheet.absoluteFillObject, { opacity: fadeAnim }]}>
         <ImageBackground
