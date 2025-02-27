@@ -7,7 +7,8 @@ import {
     Image, 
     TouchableWithoutFeedback, 
     TouchableOpacity, 
-    StatusBar 
+    StatusBar, 
+    useColorScheme 
 } from "react-native";
 import { useState, useEffect } from "react";
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from "react-native-reanimated";
@@ -19,6 +20,13 @@ export default function LogIn({ navigation }: any) {
 
     // Shared value for smooth keyboard transition
     const keyboardHeight = useSharedValue(0);
+
+    const colorScheme = useColorScheme();
+
+    // Determine the image source based on the color scheme
+    const imageSource = colorScheme === 'dark' 
+        ? require("../assets/logo3dDark.png") 
+        : require("../assets/logo3d.png");
 
     useEffect(() => {
         const keyboardShowListener = Keyboard.addListener("keyboardDidShow", (event) => {
@@ -36,61 +44,67 @@ export default function LogIn({ navigation }: any) {
     }, []);
 
     // Animated style for smooth transition of the whole screen
-    const animatedStyle = useAnimatedStyle(() => {
-        return {
-            transform: [{ translateY: keyboardHeight.value }],
-        };
-    });
+    const animatedStyle = useAnimatedStyle(() => ({
+        transform: [{ translateY: keyboardHeight.value }],
+    }));
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <Animated.View style={[styles.container, animatedStyle]}>
                 {/* Show the status bar but make it transparent */}
-                <StatusBar backgroundColor="transparent" translucent barStyle="dark-content" />
+                <StatusBar 
+                    backgroundColor="transparent" 
+                    translucent 
+                    barStyle={colorScheme === 'dark' ? 'light-content' : 'dark-content'} 
+                />
 
                 {/* Gradient Background */}
                 <LinearGradient 
-                    colors={["#A8CECE", "#B6B8CE"]} 
+                    colors={colorScheme === 'dark' ? ["#ECD9B2", "#61350E"] : ["#A8CECE", "#B6B8CE"]} 
                     style={styles.gradientBackground}
                 />
 
                 {/* White Background with rounded upper corners */}
                 <View style={styles.whiteBackground}>
-                    <View style={styles.whiteInnerBackground} />
+                    <View style={[styles.whiteInnerBackground, { backgroundColor: colorScheme === 'dark' ? '#1E1E1E' : '#F5F5F5' }]} />
                 </View>
 
                 {/* Overlay PNG Design */}
-                <Image source={require("../assets/logo3d.png")} style={styles.designImage} />
+                <Image source={imageSource} style={styles.designImage} />
 
                 {/* Login Form */}
                 <View style={styles.inner}>
-                    <Text style={styles.title}>Planorama</Text>
+                    <Text style={[styles.title, { color: colorScheme === 'dark' ? '#FFFFFF' : '#000000' }]}>Planorama</Text>
 
-                    <Text style={styles.label}>Username</Text>
+                    <Text style={[styles.label, { color: colorScheme === 'dark' ? '#FFFFFF' : '#000000' }]}>Username</Text>
                     <TextInput
-                        style={styles.input}
+                        style={[styles.input, { backgroundColor: colorScheme === 'dark' ? '#333333' : '#FFFFFF', color: colorScheme === 'dark' ? '#FFFFFF' : '#000000' }]}
                         placeholder=""
+                        placeholderTextColor={colorScheme === 'dark' ? '#AAAAAA' : '#888888'}
                         value={username}
                         onChangeText={setUsername}
                     />
 
-                    <Text style={styles.label}>Password</Text>
+                    <Text style={[styles.label, { color: colorScheme === 'dark' ? '#FFFFFF' : '#000000' }]}>Password</Text>
                     <TextInput
-                        style={styles.input}
+                        style={[styles.input, { backgroundColor: colorScheme === 'dark' ? '#333333' : '#FFFFFF', color: colorScheme === 'dark' ? '#FFFFFF' : '#000000' }]}
                         placeholder=""
+                        placeholderTextColor={colorScheme === 'dark' ? '#AAAAAA' : '#888888'}
                         value={password}
                         onChangeText={setPassword}
                         secureTextEntry={true}
                     />
 
                     <TouchableOpacity
-                        style={styles.button}
+                        style={[styles.button, { backgroundColor: colorScheme === 'dark' ? "#63460C" : "#007BFF" }]}
                         onPress={() => navigation.navigate("Dashboard")}
                     >
                         <Text style={styles.buttonText}>Login</Text>
                     </TouchableOpacity>
 
-                    <Text style={styles.signup}>No Account?</Text>
+                    <Text style={[styles.signup, { color: colorScheme === 'dark' ? "#E1D6C0" : "#007BFF" }]}>
+                        No Account?
+                    </Text>
                 </View>
             </Animated.View>
         </TouchableWithoutFeedback>
@@ -119,9 +133,8 @@ const styles = StyleSheet.create({
     },
     whiteInnerBackground: {
         flex: 1,
-        backgroundColor: "#F5F5F5",
-        borderTopLeftRadius: 40,  // Increased rounding
-        borderTopRightRadius: 40, // Increased rounding
+        borderTopLeftRadius: 40,  
+        borderTopRightRadius: 40, 
     },
     designImage: {
         position: "absolute",
@@ -161,7 +174,6 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     button: {
-        backgroundColor: "#007BFF",
         width: 180,
         height: 50,
         borderRadius: 25,
@@ -181,7 +193,6 @@ const styles = StyleSheet.create({
     },
     signup: {
         marginTop: 10,
-        color: "#007BFF",
         fontSize: 16,
         fontWeight: "bold",
         alignSelf: "center",
