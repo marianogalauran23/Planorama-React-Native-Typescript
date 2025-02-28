@@ -60,7 +60,7 @@ export default function LogIn({ navigation }: any) {
 
                 {/* Gradient Background */}
                 <LinearGradient 
-                    colors={colorScheme === 'dark' ? ["#ECD9B2", "#61350E"] : ["#A8CECE", "#B6B8CE"]} 
+                    colors={colorScheme === 'dark' ? ["#938465", "#bc6247"] : ["#A8CECE", "#B6B8CE"]} 
                     style={styles.gradientBackground}
                 />
 
