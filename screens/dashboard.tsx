@@ -16,8 +16,10 @@ import {
 } from 'react-native';
 import { BlurView } from 'expo-blur';
 import * as Haptics from 'expo-haptics';
+import { useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
+
 
 const CARD_WIDTH = width * 0.8;
 const CARD_HEIGHT = 480;
@@ -87,7 +89,7 @@ let personInfo = {
   description: 'Description here',
 };
 
-export default function Dashboard() {
+export default function Dashboard({ navigation }: any) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [bgUri, setBgUri] = useState(events[0].imageUrl);
   const [isDarkBackground, setIsDarkBackground] = useState(false);
@@ -146,10 +148,15 @@ export default function Dashboard() {
   };
 
   const handleCardPress = (item: EventItem) => {
-    if (!isScrolling) { // Only trigger if not scrolling
-      console.log('Card Pressed:', item.title);
-    }
-  };
+  if (!isScrolling) {
+    navigation.navigate("Event", {
+      eventId: item.id,  // Passing event ID
+      eventTitle: item.title, // Passing event title
+      personName: personInfo.name, // Passing person's name
+    });
+    console.log('Card Pressed:', item.title);
+  }
+};
 
   return (
     <View style={styles.container}>
