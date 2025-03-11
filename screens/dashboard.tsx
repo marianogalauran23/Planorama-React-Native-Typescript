@@ -38,6 +38,7 @@ type EventItem = {
   time: string;
   location: string;
   imageUrl: string;
+  description?: string;
 };
 
 let events: EventItem[] = [
@@ -48,6 +49,7 @@ let events: EventItem[] = [
     location: 'Grande Restaurant, New York',
     imageUrl:
       'https://images.unsplash.com/photo-1734779205618-30ee0220f56f?q=80&w=2070&auto=format&fit=crop',
+    description: 'Join us for a memorable and unforgettable event at our beautiful hotel.',
   },
   {
     id: '2',
@@ -56,6 +58,7 @@ let events: EventItem[] = [
     location: 'Skyline Tower, LA',
     imageUrl:
       'https://images.unsplash.com/photo-1740328398503-20fe0f3ff00f?q=80&w=1974&auto=format&fit=crop',
+    description: 'We invite you to our upcoming corporate event at our beautiful hotel.',
   },
   {
     id: '3',
@@ -64,6 +67,7 @@ let events: EventItem[] = [
     location: 'Rosewood Hall, Chicago',
     imageUrl:
       'https://images.unsplash.com/photo-1740389029981-a891776cf0ad?q=80&w=1974&auto=format&fit=crop',
+    description: 'Join us for a memorable and unforgettable event at our beautiful hotel.',
   },
   {
     id: '4',
@@ -72,6 +76,7 @@ let events: EventItem[] = [
     location: 'The Old Mill, Birmingham',
     imageUrl:
       'https://images.unsplash.com/photo-1531956531700-dc0ee0f1f9a5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    description: 'Join us for a memorable and unforgettable event at our beautiful hotel.',
   },
   {
     id: '5',
@@ -80,6 +85,7 @@ let events: EventItem[] = [
     location: 'The Cottage, Edinburgh',
     imageUrl:
       'https://images.unsplash.com/photo-1555961064-4bc7ec634bbc?q=80&w=2099&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    description: 'Join us for a memorable and unforgettable event at our beautiful hotel.',
   },
 ];
 
@@ -156,6 +162,7 @@ export default function Dashboard({ navigation }: any) {
       imageUrl: item.imageUrl,
       location: item.location,
       time: item.time,// Passing person's name
+      description: item.description ?? 'No Description', // Passing event's location
     });
     console.log('Card Pressed:', item.title);
   }
