@@ -151,8 +151,11 @@ export default function Dashboard({ navigation }: any) {
   if (!isScrolling) {
     navigation.navigate("Event", {
       eventId: item.id,  // Passing event ID
-      eventTitle: item.title, // Passing event title
-      personName: personInfo.name, // Passing person's name
+      eventTitle: item.title,
+      personName: personInfo.name, // Passing event title
+      imageUrl: item.imageUrl,
+      location: item.location,
+      time: item.time,// Passing person's name
     });
     console.log('Card Pressed:', item.title);
   }
