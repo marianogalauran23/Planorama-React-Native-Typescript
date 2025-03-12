@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Dashboard from "./screens/dashboard";
 import LogIn from "./screens/login";
 import Event from "./screens/event";
+import Profile from "./screens/profile";
 
 const Stack = createStackNavigator();
 
@@ -23,6 +24,9 @@ export default function App() {
         component={Event} 
         options={{ headerShown: false }}
         />
+        <Stack.Screen name="Profile"
+        component={Profile}
+        options={{ headerShown: false }}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

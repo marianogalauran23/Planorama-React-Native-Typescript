@@ -90,9 +90,11 @@ let events: EventItem[] = [
 ];
 
 let personInfo = {
+  id: 1,
   name: 'John Doe',
   image: 'https://thispersondoesnotexist.com/',
-  description: 'Description here',
+  description: 'Passionate and detail-oriented Computer Science student, currently in my final year. Experienced in Android development, React, and AI-driven solutions. Working on a text-to-speech and speech-to-text system for my thesis while developing an event management system with dynamic Firebase integration.',
+  username: '@johndoe',
 };
 
 export default function Dashboard({ navigation }: any) {
@@ -143,6 +145,12 @@ export default function Dashboard({ navigation }: any) {
 
   const handleHeaderPress = () => {
     console.log('Header Pressed!');
+    navigation.navigate("Profile", {id: personInfo.id,
+      name: personInfo.name,
+      image: personInfo.image,
+      description: personInfo.description,
+      username: personInfo.username,
+    });
   };
 
   const handleBellPress = () => {

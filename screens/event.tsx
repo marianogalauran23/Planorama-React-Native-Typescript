@@ -86,7 +86,11 @@ export default function Event({ route }: any) {
 
     return (
         <View style={[styles.container, { backgroundColor: dominantColor }]}>
-            <StatusBar translucent backgroundColor="transparent" barStyle={isDark ? 'light-content' : 'dark-content'} />
+            <StatusBar 
+                    backgroundColor="transparent" 
+                    translucent 
+                    barStyle={'light-content'} 
+                />
             <Image source={{ uri: imageUrl }} style={styles.backgroundImage} blurRadius={50} />
             <View style={styles.darkOverlay} />
             <BlurView intensity={80} style={styles.blurView} />
@@ -98,6 +102,7 @@ export default function Event({ route }: any) {
                     <Text style={[styles.eventTitle, { color: isDark ? '#FFF' : '#000' }]}>{eventTitle}</Text>
                     <Text style={[styles.eventDescription, { color: isDark ? '#FFF' : '#000' }]}>{location}</Text>
                     <Text style={[styles.time, { color: isDark ? '#FFF' : '#000' }]}>{time}</Text>
+                    <Text style={[styles.Description, { color:'#FFF' }]}>"{description}"</Text>
                 </View>
 
                 <View style={styles.buttonContainer}>
@@ -111,7 +116,6 @@ export default function Event({ route }: any) {
 
                 {/* Invitees */}
                 <View style={styles.detailsContainer}>
-                <Text style={[styles.Description, { color:'#000' }]}>"{description}"</Text>
                     <Text style={styles.sectionTitle}>Invitees</Text>
                     {placeholder.map((item) => (
                         <View key={item.id} style={styles.inviteeCard}>
@@ -195,7 +199,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: 50,
+        marginBottom: 70,
         gap: 25,
     },
     button: {
