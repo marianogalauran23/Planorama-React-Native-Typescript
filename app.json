@@ -13,7 +13,10 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "We use Face ID to quickly log you into your account."
+      }
     },
     "android": {
       "adaptiveIcon": {

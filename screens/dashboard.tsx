@@ -16,7 +16,6 @@ import {
 } from 'react-native';
 import { BlurView } from 'expo-blur';
 import * as Haptics from 'expo-haptics';
-import { useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 
@@ -92,7 +91,7 @@ let events: EventItem[] = [
 let personInfo = {
   id: 1,
   name: 'John Doe',
-  image: 'https://thispersondoesnotexist.com/',
+  image: 'https://randomuser.me/api/portraits/men/9.jpg',
   description: 'Passionate and detail-oriented Computer Science student, currently in my final year. Experienced in Android development, React, and AI-driven solutions. Working on a text-to-speech and speech-to-text system for my thesis while developing an event management system with dynamic Firebase integration.',
   username: '@johndoe',
 };
@@ -116,7 +115,7 @@ export default function Dashboard({ navigation }: any) {
     });
     return () => scrollX.removeListener(listenerId);
   }, []);
-
+  
   const onMomentumScrollEnd = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const offset = e.nativeEvent.contentOffset.x;
     const index = Math.round(offset / ITEM_CONTAINER_WIDTH);
