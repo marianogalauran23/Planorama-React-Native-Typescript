@@ -42,7 +42,7 @@ This guide will walk you through the steps to set up and run the Planorama React
     Navigate into the newly cloned directory:
 
     ```bash
-    cd Planorama-React-Native-Typescript
+    cd your_folder_name
     ```
 
     Then, open the project in VS Code:
