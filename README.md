@@ -34,7 +34,7 @@ This guide will walk you through the steps to set up and run the Planorama React
 3.  **Clone the Repository:**
 
     ```bash
-    git clone [https://github.com/marianogalauran23/Planorama-React-Native-Typescript](https://github.com/marianogalauran23/Planorama-React-Native-Typescript)
+    git clone https://github.com/marianogalauran23/Planorama-React-Native-Typescript
     ```
 
 4.  **Open in VS Code:**
