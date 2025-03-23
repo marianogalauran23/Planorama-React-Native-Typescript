@@ -46,8 +46,10 @@ const placeholder: Invitees[] = [
     },
 ];
 
-export default function Event({ route }: any) {
-    const { eventTitle, personName, imageUrl, location, time , description} = route.params;
+let inviteesNumber = placeholder.length;
+
+export default function Event({ route, navigation }: any) {
+    const { eventTitle, personName, imageUrl, location, time , description, id} = route.params;
     const [dominantColor, setDominantColor] = useState('#000');
     const [isDark, setIsDark] = useState(true);
 
@@ -80,6 +82,10 @@ export default function Event({ route }: any) {
         return (0.299 * r + 0.587 * g + 0.114 * b) / 255 < 0.5;
     }
 
+    function editPress(){
+        navigation.navigate("Progress");
+    }
+
     const callInvitee = (phoneNumber: string) => {
         Linking.openURL(`tel:${phoneNumber}`);
     };
@@ -106,7 +112,7 @@ export default function Event({ route }: any) {
                 </View>
 
                 <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.button}>
+                    <TouchableOpacity style={styles.button} onPress={editPress}>
                         <Text style={[styles.buttonText, { color: isDark ? '#FFF' : '#000' }]}>Budget & Progress</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.bellIconContainer}>
@@ -117,6 +123,7 @@ export default function Event({ route }: any) {
                 {/* Invitees */}
                 <View style={styles.detailsContainer}>
                     <Text style={styles.sectionTitle}>Invitees</Text>
+                    <Text style={styles.inviteesno}>{inviteesNumber} Invitees</Text>
                     {placeholder.map((item) => (
                         <View key={item.id} style={styles.inviteeCard}>
                             <Image source={{ uri: item.profile }} style={styles.inviteeImage} />
@@ -129,10 +136,11 @@ export default function Event({ route }: any) {
                             </TouchableOpacity>
                         </View>
                     ))}
-                    <TouchableOpacity style={{ backgroundColor: '#007AFF', padding: 20, borderRadius: 30, alignItems: 'center', marginTop: 40 }}>
+                    <TouchableOpacity style={{ backgroundColor: '#007AFF', padding: 20, borderRadius: 30, alignItems: 'center', marginTop: 40, marginBottom: 30 }}>
                         <Text style={{ fontSize: 20, color: 'white', textAlign: 'center', fontWeight: 'bold'}}>Edit</Text>
                     </TouchableOpacity>
-                    <Text style={styles.hostedBy}>Hosted by {personName}</Text>
+                    <Text style={styles.hostedBy}>Event ID: {id}</Text>
+                    <Text style={[styles.hostedBy, { marginTop: 0 }]}>Hosted by {personName}</Text>
                 </View>
             </ScrollView>
         </View>
@@ -232,8 +240,12 @@ const styles = StyleSheet.create({
         marginTop: 10,
         fontSize: 30,
         fontWeight: 'bold',
+    },
+
+    inviteesno: {
         marginBottom: 30,
     },
+
     inviteeCard: {
         flexDirection: 'row',
         alignItems: 'center',

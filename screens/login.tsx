@@ -26,7 +26,16 @@ export default function LogIn({ navigation }: any) {
         ? require("../assets/logo3dDark.png") 
         : require("../assets/logo3d.png");
 
-    // Authenticate biometrics on app start
+    // Handle StatusBar visibility
+    useEffect(() => {
+        StatusBar.setHidden(false);
+        StatusBar.setBarStyle(colorScheme === 'dark' ? "light-content" : "dark-content");
+
+        return () => {
+            StatusBar.setHidden(true); // Hide when leaving the screen
+        };
+    }, []);
+
     useEffect(() => {
         checkSavedLogin();
     }, []);
@@ -51,7 +60,6 @@ export default function LogIn({ navigation }: any) {
         transform: [{ translateY: keyboardHeight.value }],
     }));
 
-    // Check saved login and authenticate
     const checkSavedLogin = async () => {
         try {
             const savedUsername = await AsyncStorage.getItem("username");
@@ -65,7 +73,6 @@ export default function LogIn({ navigation }: any) {
         }
     };
 
-    // Biometric authentication
     const handleBiometricAuth = async () => {
         try {
             const hasBiometricHardware = await LocalAuthentication.hasHardwareAsync();
@@ -89,7 +96,6 @@ export default function LogIn({ navigation }: any) {
         }
     };
 
-    // Handle normal login and save credentials
     const handleLogin = async () => {
         if (!username || !password) {
             Alert.alert("Error", "Username and password cannot be empty.");
@@ -108,11 +114,7 @@ export default function LogIn({ navigation }: any) {
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <Animated.View style={[styles.container, animatedStyle]}>
-                <StatusBar 
-                    backgroundColor="transparent" 
-                    translucent 
-                    barStyle={colorScheme === 'dark' ? 'light-content' : 'dark-content'} 
-                />
+                <StatusBar backgroundColor="transparent" translucent />
 
                 <LinearGradient 
                     colors={colorScheme === 'dark' ? ["#938465", "#bc6247"] : ["#A8CECE", "#B6B8CE"]} 

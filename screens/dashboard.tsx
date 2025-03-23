@@ -90,11 +90,13 @@ let events: EventItem[] = [
 
 let personInfo = {
   id: 1,
-  name: 'John Doe',
+  name: 'Kit Connor',
   image: 'https://randomuser.me/api/portraits/men/9.jpg',
   description: 'Passionate and detail-oriented Computer Science student, currently in my final year. Experienced in Android development, React, and AI-driven solutions. Working on a text-to-speech and speech-to-text system for my thesis while developing an event management system with dynamic Firebase integration.',
-  username: '@johndoe',
+  username: 'johndoe',
 };
+
+const Connor = require('../assets/KitConner.jpg');
 
 export default function Dashboard({ navigation }: any) {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -144,20 +146,24 @@ export default function Dashboard({ navigation }: any) {
 
   const handleHeaderPress = () => {
     console.log('Header Pressed!');
-    navigation.navigate("Profile", {id: personInfo.id,
-      name: personInfo.name,
-      image: personInfo.image,
-      description: personInfo.description,
+    navigation.navigate('Profile', { 
+      id: personInfo.id, 
+      name: personInfo.name, 
+      image: personInfo.image, 
+      description: personInfo.description, 
       username: personInfo.username,
     });
   };
 
+
   const handleBellPress = () => {
     console.log('Bell Icon Pressed!');
+    navigation.navigate("Notification");
   };
 
   const handleAddPress = () => {
     console.log('Add Container Pressed!');
+    navigation.navigate("Creating Event");
   };
 
   const handleCardPress = (item: EventItem) => {
@@ -169,7 +175,9 @@ export default function Dashboard({ navigation }: any) {
       imageUrl: item.imageUrl,
       location: item.location,
       time: item.time,// Passing person's name
-      description: item.description ?? 'No Description', // Passing event's location
+      description: item.description ?? 'No Description',
+      id: item.id, // Passing event's location
+
     });
     console.log('Card Pressed:', item.title);
   }
@@ -188,7 +196,7 @@ export default function Dashboard({ navigation }: any) {
       {/* Header with BlurView */}
       <TouchableOpacity onPress={handleHeaderPress}>
         <BlurView intensity={50} style={styles.header}>
-          <Image source={{ uri: personInfo.image }} style={styles.profilepic} />
+          <Image source={Connor} style={styles.profilepic} />
           <View style={{ flex: 1 }}>
             <Text style={[styles.greetingText, { color: isDarkBackground ? '#fff' : '#333' }]}>
               {isDarkBackground ? 'Good Evening!' : 'Good Morning!'}
@@ -267,7 +275,8 @@ export default function Dashboard({ navigation }: any) {
       </View>
     </View>
   );
-}
+;}
+
 
 const styles = StyleSheet.create({
   container: { flex: 1, paddingTop: 120 }, // Added padding to push content down
