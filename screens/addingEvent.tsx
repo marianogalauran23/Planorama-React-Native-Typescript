@@ -103,8 +103,8 @@ export default function AddEvent({ navigation }: any) {
 
               {/* Frosted Glass Button */}
               <BlurView intensity={60} tint="light" style={styles.button}>
-                <TouchableOpacity>
-                  <Text style={styles.buttonText} onPress={() => continueBtn()}>CONTINUE</Text>
+                <TouchableOpacity  onPress={() => continueBtn()}>
+                  <Text style={styles.buttonText}>CONTINUE</Text>
                 </TouchableOpacity>
               </BlurView>
             </BlurView>
