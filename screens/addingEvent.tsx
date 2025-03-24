@@ -18,13 +18,17 @@ import { BlurView } from "expo-blur";
 
 const BG = require("../assets/addEventBG.jpg");
 
-export default function AddEvent() {
+export default function AddEvent({ navigation }: any) {
   const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const handleDateChange = (event: any, selectedDate?: Date) => {
     setShowDatePicker(false);
     if (selectedDate) setDate(selectedDate);
+  };
+
+  function continueBtn(){
+    navigation.navigate("Invitees");
   };
 
   return (
@@ -100,7 +104,7 @@ export default function AddEvent() {
               {/* Frosted Glass Button */}
               <BlurView intensity={60} tint="light" style={styles.button}>
                 <TouchableOpacity>
-                  <Text style={styles.buttonText}>CONTINUE</Text>
+                  <Text style={styles.buttonText} onPress={() => continueBtn()}>CONTINUE</Text>
                 </TouchableOpacity>
               </BlurView>
             </BlurView>

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  ScrollView,
   View,
   Text,
   TouchableOpacity,
@@ -7,7 +8,6 @@ import {
   StyleSheet,
   SafeAreaView,
 } from "react-native";
-import MasonryList from "react-native-masonry-list"; // Make sure to add the custom declaration file
 import { BlurView } from "expo-blur";
 
 type Invitee = {
@@ -74,7 +74,7 @@ const inviteesData: Invitee[] = [
   },
 ];
 
-export default function InviteesScreen() {
+export default function InviteesScreen({navigation}: any) {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
   const toggleSelect = (id: number) => {
@@ -83,43 +83,65 @@ export default function InviteesScreen() {
     );
   };
 
-  // Transform data if needed. MasonryList uses each item's `uri`, and optionally `width` and `height`.
-  // Here we assume the images will be laid out in 2 columns with spacing.
-  const masonryData = inviteesData.map((item) => ({
-    ...item,
-    // You can optionally add width here if needed, e.g.:
-    // width: (Dimensions.get('window').width - 32) / 2,
-  }));
+  // Distribute items into two columns for a simple staggered layout.
+  const leftColumn: Invitee[] = [];
+  const rightColumn: Invitee[] = [];
+
+  inviteesData.forEach((item, index) => {
+    if (index % 2 === 0) {
+      leftColumn.push(item);
+    } else {
+      rightColumn.push(item);
+    }
+  });
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.headerContainer}>
-        <Text style={styles.headerTitle}>Invite People</Text>
-      </View>
-      <MasonryList
-        images={masonryData}
-        columns={2}
-        spacing={8}
-        style={styles.masonryList}
-        imageContainerStyle={styles.imageContainer}
-        onPressImage={(item) => toggleSelect(item.id)}
-        customImageComponent={(props) => (
-          <TouchableOpacity onPress={() => toggleSelect(props.data.id)}>
-            <Image
-              source={{ uri: props.source.uri }}
-              style={[
-                props.style,
-                selectedIds.includes(props.data.id) && styles.selectedBorder,
-              ]}
-            />
-          </TouchableOpacity>
-        )}
-      />
+      <Text style={styles.headerTitle}>Invite People</Text>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={styles.columnsContainer}>
+          <View style={styles.column}>
+            {leftColumn.map((item) => (
+              <TouchableOpacity
+                key={item.id}
+                onPress={() => toggleSelect(item.id)}
+                style={[
+                  styles.imageContainer,
+                  selectedIds.includes(item.id) && styles.selectedBorder,
+                ]}
+              >
+                <Image
+                  source={{ uri: item.uri }}
+                  style={[styles.image, { height: item.height }]}
+                />
+              </TouchableOpacity>
+            ))}
+          </View>
+          <View style={styles.column}>
+            {rightColumn.map((item) => (
+              <TouchableOpacity
+                key={item.id}
+                onPress={() => toggleSelect(item.id)}
+                style={[
+                  styles.imageContainer,
+                  selectedIds.includes(item.id) && styles.selectedBorder,
+                ]}
+              >
+                <Image
+                  source={{ uri: item.uri }}
+                  style={[styles.image, { height: item.height }]}
+                />
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+      </ScrollView>
       <BlurView tint="light" intensity={70} style={styles.footer}>
-        <Text style={styles.footerText}>
-          {selectedIds.length} Selected
-        </Text>
-        <TouchableOpacity style={styles.createButton} onPress={() => alert(`Invited ${selectedIds.length} people!`)}>
+        <Text style={styles.footerText}>{selectedIds.length} Selected</Text>
+        <TouchableOpacity
+          style={styles.createButton}
+          onPress={() => alert(`Invited ${selectedIds.length} people!`)}
+        >
           <Text style={styles.createButtonText}>CREATE</Text>
         </TouchableOpacity>
       </BlurView>
@@ -132,24 +154,33 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#f5f5f5",
   },
-  headerContainer: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    marginBottom: 8,
+  scrollContainer: {
+    padding: 8,
+    paddingBottom: 100, // ensure footer space
+  },
+  columnsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  column: {
+    flex: 1,
+    marginHorizontal: 4,
   },
   headerTitle: {
     fontSize: 28,
     fontWeight: "700",
     color: "#333",
     textAlign: "center",
-  },
-  masonryList: {
-    flex: 1,
-    marginHorizontal: 8,
+    marginVertical: 12,
   },
   imageContainer: {
+    marginBottom: 8,
     borderRadius: 12,
     overflow: "hidden",
+  },
+  image: {
+    width: "100%",
+    borderRadius: 12,
   },
   selectedBorder: {
     borderWidth: 4,
