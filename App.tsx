@@ -7,6 +7,7 @@ import Profile from "./screens/profile";
 import AddingEvent from "./screens/addingEvent";
 import Progress from "./screens/progress";
 import Notification from "./screens/notification";
+import Invitees from "./screens/invitingUsers";
 
 const Stack = createStackNavigator();
 
@@ -41,7 +42,10 @@ export default function App() {
         />
         <Stack.Screen name="Creating Event"
         component={AddingEvent}
-        options={{headerShown: true}}/>
+        options={{headerShown: false}}/>
+        <Stack.Screen name="Invitees"
+        component={Invitees}
+        options={{headerShown: false}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
