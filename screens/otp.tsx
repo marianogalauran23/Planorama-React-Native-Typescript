@@ -1,68 +1,146 @@
-import React, { useRef } from "react";
-import { View, Text, StyleSheet, Image, Dimensions } from "react-native";
-import BottomSheet from "@gorhom/bottom-sheet";
+import React, { useState, useRef, useEffect } from "react";
+import { 
+    View, Text, TextInput, TouchableOpacity, StyleSheet, 
+    TouchableWithoutFeedback, Keyboard, StatusBar, BackHandler, 
+    Animated, Easing, KeyboardEvent
+} from "react-native";
 
-const { width } = Dimensions.get("window");
+export default function Authentication({ navigation }: any) {
+    const [otp, setOtp] = useState(["", "", "", "", ""]);
+    const inputRefs = useRef<Array<TextInput | null>>([]);
+    const translateY = useRef(new Animated.Value(0)).current;
 
-export default function Edit() {
-  const bottomSheetRef = useRef<BottomSheet>(null);
+    useEffect(() => {
+        const keyboardShow = (event: KeyboardEvent) => {
+            Animated.timing(translateY, {
+                toValue: -event.endCoordinates.height / 2,
+                duration: 200,
+                easing: Easing.out(Easing.ease),
+                useNativeDriver: true,
+            }).start();
+        };
 
-  return (
-    <View style={styles.container}>
-      <BottomSheet ref={bottomSheetRef} index={0} snapPoints={["25%", "50%"]}>
-        <View style={styles.sheetContainer}>
-          <View style={styles.indicator} />
-          <Text style={styles.sheetTitle}>Select a Table</Text>
-          <View style={styles.row}>
-            <Image
-              source={require("../assets/table1.png")}
-              style={styles.tableImage}
-            />
-            <Image
-              source={require("../assets/table2.png")}
-              style={styles.tableImage}
-            />
-          </View>
-        </View>
-      </BottomSheet>
-    </View>
-  );
+        const keyboardHide = () => {
+            Animated.timing(translateY, {
+                toValue: 0,
+                duration: 200,
+                easing: Easing.out(Easing.ease),
+                useNativeDriver: true,
+            }).start();
+        };
+
+        const showListener = Keyboard.addListener("keyboardWillShow", keyboardShow);
+        const hideListener = Keyboard.addListener("keyboardWillHide", keyboardHide);
+
+        const backHandler = BackHandler.addEventListener("hardwareBackPress", () => true);
+
+        return () => {
+            showListener.remove();
+            hideListener.remove();
+            backHandler.remove();
+        };
+    }, []);
+
+    const handleOTPChange = (text: string, index: number) => {
+        let newOtp = [...otp];
+        if (text) {
+            newOtp[index] = text;
+            setOtp(newOtp);
+            if (index < 4) {
+                inputRefs.current[index + 1]?.focus();
+            }
+        } else {
+            newOtp[index] = "";
+            setOtp(newOtp);
+            if (index > 0) {
+                inputRefs.current[index - 1]?.focus();
+            }
+        }
+    };
+
+    const go = () => {
+        navigation.replace("LogIn");
+    };
+
+    return (
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={styles.container}>
+                <StatusBar barStyle={"dark-content"} />
+                <Animated.View style={[styles.innerContainer, { transform: [{ translateY }] }]}>
+                    <Text style={styles.title}>Verify your email</Text>
+                    <Text style={styles.subtitle}>Check your email address for the OTP Code</Text>
+
+                    <View style={styles.otpContainer}>
+                        {otp.map((value, index) => (
+                            <TextInput
+                                key={index}
+                                ref={(el) => (inputRefs.current[index] = el)}
+                                style={styles.otpBox}
+                                keyboardType="numeric"
+                                maxLength={1}
+                                value={value}
+                                onChangeText={(text) => handleOTPChange(text, index)}
+                            />
+                        ))}
+                    </View>
+
+                    <TouchableOpacity
+                        style={[styles.button, { opacity: otp.join("").length === 5 ? 1 : 0.5 }]}
+                        disabled={otp.join("").length !== 5}
+                        onPress={go}
+                    >
+                        <Text style={styles.buttonText}>CONTINUE</Text>
+                    </TouchableOpacity>
+                </Animated.View>
+            </View>
+        </TouchableWithoutFeedback>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#f5f5f5" },
-  backgroundImage: {
-    position: "absolute",
-    width: "100%",
-    height: "100%",
-    resizeMode: "cover",
-  },
-  sheetContainer: {
-    flex: 1,
-    alignItems: "center",
-    paddingTop: 10,
-  },
-  indicator: {
-    width: 50,
-    height: 5,
-    borderRadius: 2.5,
-    backgroundColor: "#ccc",
-    marginBottom: 15,
-  },
-  sheetTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 15,
-  },
-  row: {
-    flexDirection: "row",
-    justifyContent: "center",
-    width: "100%",
-  },
-  tableImage: {
-    width: width * 0.3,
-    height: width * 0.3,
-    resizeMode: "contain",
-    marginHorizontal: 10,
-  },
+    container: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#fff",
+    },
+    innerContainer: {
+        alignItems: "center",
+    },
+    title: {
+        fontSize: 20,
+        fontWeight: "bold",
+        marginBottom: 10,
+    },
+    subtitle: {
+        fontSize: 14,
+        color: "gray",
+        marginBottom: 30,
+        textAlign: "center",
+    },
+    otpContainer: {
+        flexDirection: "row",
+        gap: 10,
+        marginBottom: 30,
+    },
+    otpBox: {
+        width: 40,
+        height: 40,
+        borderWidth: 1,
+        borderColor: "gray",
+        borderRadius: 5,
+        textAlign: "center",
+        fontSize: 18,
+    },
+    button: {
+        backgroundColor: "#A8CECE",
+        paddingVertical: 12,
+        paddingHorizontal: 40,
+        borderRadius: 20,
+    },
+    buttonText: {
+        color: "#fff",
+        fontSize: 16,
+        fontWeight: "bold",
+    },
 });

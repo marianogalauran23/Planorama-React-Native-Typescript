@@ -1,18 +1,40 @@
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { 
+    getAuth, 
+    initializeAuth, 
+    setPersistence, 
+    browserLocalPersistence 
+} from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
+// Firebase configuration
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID",
+  apiKey: "AIzaSyAeXrRBiBzEM5DmtSDVZ3FTojKO443h4RQ",
+  authDomain: "tcu-planorama.firebaseapp.com",
+  databaseURL: "https://tcu-planorama-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "tcu-planorama",
+  storageBucket: "tcu-planorama.firebasestorage.app",
+  messagingSenderId: "164200453353",
+  appId: "1:164200453353:web:25c3bb8cfafb0f8cf98c78",
+  measurementId: "G-MTBVVEVN87"
 };
-
+// Initialize Firebase app
 const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
-export const db = getFirestore(app);
-export const storage = getStorage(app);
+
+// ✅ Initialize Firebase Auth
+const auth = initializeAuth(app);
+
+// ✅ Set persistence to store session
+setPersistence(auth, browserLocalPersistence)
+    .then(() => {
+        console.log("Firebase Auth Persistence Enabled!");
+    })
+    .catch((error) => {
+        console.error("Error enabling persistence:", error);
+    });
+
+// Initialize Firestore
+const db = getFirestore(app);
+
+export { auth, db };
