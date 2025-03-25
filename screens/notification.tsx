@@ -23,7 +23,6 @@ type NotificationItem = {
   type: 'info' | 'warning' | 'error' | 'invitation';
 };
 
-// Sample data with varying timestamps
 const initialData: NotificationItem[] = [
   {
     id: 1,
@@ -371,7 +370,6 @@ const initialData: NotificationItem[] = [
   },
 ];
 
-// Group notifications by time into fixed categories.
 function groupNotifications(notifications: NotificationItem[]) {
   const now = new Date();
   const groups: { [key: string]: NotificationItem[] } = {};
@@ -405,7 +403,6 @@ function groupNotifications(notifications: NotificationItem[]) {
     data: groups[key],
   }));
 
-  // Sort sections by desired order.
   const order = ['Today', 'Yesterday', 'This Week', 'This Month', 'This Year', 'Older'];
   sections.sort((a, b) => order.indexOf(a.title) - order.indexOf(b.title));
 
@@ -415,7 +412,6 @@ function groupNotifications(notifications: NotificationItem[]) {
 export default function NotificationScreen() {
   const [notifications, setNotifications] = useState<NotificationItem[]>(initialData);
 
-  // For keeping only one swipeable open at a time.
   const currentlyOpenSwipeable = useRef<Swipeable | null>(null);
 
   useFocusEffect(
@@ -433,7 +429,6 @@ export default function NotificationScreen() {
   const markReadOrAccept = (item: NotificationItem) => {
     if (item.type === 'invitation') {
       console.log(`Accepted invitation #${item.id}`);
-      // Additional accept logic here.
     } else {
       console.log(`Marked notification #${item.id} as read`);
       setNotifications((current) =>
@@ -442,7 +437,6 @@ export default function NotificationScreen() {
     }
   };
 
-  // Left swipe: Delete
   const renderLeftActions = (
     progress: Animated.AnimatedInterpolation<number>,
     dragX: Animated.AnimatedInterpolation<number>,
@@ -467,7 +461,6 @@ export default function NotificationScreen() {
     );
   };
 
-  // Right swipe: Accept (if invitation) or Mark Read
   const renderRightActions = (
     progress: Animated.AnimatedInterpolation<number>,
     dragX: Animated.AnimatedInterpolation<number>,

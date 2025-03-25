@@ -33,7 +33,6 @@ export default function AddEvent({ navigation }: any) {
 
   return (
     <ImageBackground source={BG} style={styles.background} blurRadius={10}>
-      {/* Dark overlay */}
       <View style={styles.overlay} />
       <SafeAreaView style={styles.container}>
         <KeyboardAvoidingView
@@ -44,13 +43,11 @@ export default function AddEvent({ navigation }: any) {
             contentContainerStyle={styles.scrollContainer}
             showsVerticalScrollIndicator={false}
           >
-            {/* Header Container */}
             <View style={styles.headerContainer}>
               <Text style={styles.headerTitle}>Create an event</Text>
               <Text style={styles.subHeader}>Step 1 of 2: Event Details</Text>
             </View>
 
-            {/* Frosted Glass Form */}
             <BlurView intensity={50} tint="light" style={styles.card}>
               <Text style={styles.label}>Event Name</Text>
               <TextInput
@@ -101,7 +98,6 @@ export default function AddEvent({ navigation }: any) {
                 multiline
               />
 
-              {/* Frosted Glass Button */}
               <BlurView intensity={60} tint="light" style={styles.button}>
                 <TouchableOpacity  onPress={() => continueBtn()}>
                   <Text style={styles.buttonText}>CONTINUE</Text>

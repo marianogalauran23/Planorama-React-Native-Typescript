@@ -26,7 +26,6 @@ type Data = {
   status: string;
 };
 
-// ====== Sample event data ======
 const eventdata: Data[] = [
   {
     id: 1,
@@ -243,20 +242,16 @@ const eventdata: Data[] = [
 export default function Profile({ route, navigation }: any) {
   const colorScheme = useColorScheme();
 
-  // Destructure parameters; fallback if needed
   const { id, name, image, description, username } = route.params || {};
 
-  // Placeholder background image
   const backgroundSource = require('../assets/profileBackground.jpg');
 
-  // Refresh Control
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = async () => {
     setRefreshing(true);
     setTimeout(() => setRefreshing(false), 800);
   };
 
-  // Status bar
   useFocusEffect(
     useCallback(() => {
       StatusBar.setHidden(false);
@@ -264,7 +259,6 @@ export default function Profile({ route, navigation }: any) {
     }, [])
   );
 
-  // Logout function
   async function logout(navigation: any) {
     try {
       await AsyncStorage.clear();
@@ -277,7 +271,6 @@ export default function Profile({ route, navigation }: any) {
     }
   }
 
-  // Calculate event stats
   const totalEvents = eventdata.length;
   const completedCount = eventdata.filter(e => e.status.toLowerCase() === 'completed').length;
   const ongoingCount = eventdata.filter(e => e.status.toLowerCase() === 'ongoing').length;
@@ -289,18 +282,13 @@ export default function Profile({ route, navigation }: any) {
       style={styles.background}
       resizeMode="cover"
     >
-      {/* 
-        Bottom Blur Container:
-        This absolutely positioned container covers ~60% of the screen at the bottom,
-        with a BlurView + a 3-stop gradient for a smooth fade.
-      */}
       <View style={styles.bottomBlurContainer}>
         <BlurView intensity={50} style={StyleSheet.absoluteFillObject} />
         <LinearGradient
           colors={[
-            'rgba(255,255,255,0)',    // Transparent at top
-            'rgba(255,255,255,0.5)',  // Semi-transparent
-            'rgba(255,255,255,1)',    // Opaque white at bottom
+            'rgba(255,255,255,0)',
+            'rgba(255,255,255,0.5)',
+            'rgba(255,255,255,1)',
           ]}
           locations={[0, 0.7, 1]}
           style={StyleSheet.absoluteFillObject}
@@ -322,29 +310,15 @@ export default function Profile({ route, navigation }: any) {
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
           showsVerticalScrollIndicator={false}
         >
-          {/* ============== BLURRED PROFILE HEADER ============== */}
           <View style={styles.profileHeader}>
-            {/* 
-              The BlurView for the profile header itself. 
-              We use absoluteFillObject so it covers the entire header area. 
-            */}
             <BlurView intensity={40} style={StyleSheet.absoluteFillObject} />
-
-            {/* 
-              The actual content (photo, text, etc.) 
-              goes on top of the blur inside this container.
-            */}
             <View style={styles.profileHeaderContent}>
-              {/* Profile Photo */}
               <Image source={require('../assets/KitConner.jpg')} style={styles.profileImage} />
 
-              {/* Total Number of Events */}
               <Text style={styles.eventCount}>{totalEvents} Events</Text>
 
-              {/* User's Name */}
               <Text style={styles.profileName}>{name || 'John Doe'}</Text>
 
-              {/* Roles / Tags */}
               <View style={styles.roleContainer}>
                 <Text style={styles.roleText}>Coach</Text>
                 <Text style={styles.dot}>•</Text>
@@ -353,7 +327,6 @@ export default function Profile({ route, navigation }: any) {
                 <Text style={styles.roleText}>Personal Growth</Text>
               </View>
 
-              {/* Stats Row */}
               <View style={styles.statsRow}>
                 <View style={styles.statBox}>
                   <Text style={styles.statNumber}>{completedCount}</Text>
@@ -369,12 +342,10 @@ export default function Profile({ route, navigation }: any) {
                 </View>
               </View>
 
-              {/* Short Description */}
               <Text style={styles.description}>
                 "{description || 'Short description about the user...'}"
               </Text>
 
-              {/* Bottom Buttons (Edit & Logout) */}
               <View style={styles.buttonRow}>
                 <TouchableOpacity style={styles.editButton} onPress={() => Alert.alert("Edit Profile")}>
                   <Text style={styles.editText}>EDIT</Text>
@@ -386,9 +357,7 @@ export default function Profile({ route, navigation }: any) {
               </View>
             </View>
           </View>
-          {/* ============== END PROFILE HEADER ============== */}
 
-          {/* ============== EVENTS SECTION ============== */}
           <BlurView intensity={20}>
           <View style={styles.eventSection}>
             <Text style={styles.eventTitle}>Your Events</Text>
@@ -409,17 +378,13 @@ export default function Profile({ route, navigation }: any) {
             ))}
           </View>
           </BlurView>
-          
-          {/* ============== END EVENTS SECTION ============== */}
         </ScrollView>
       </SafeAreaView>
     </ImageBackground>
   );
 }
 
-// ====== Styles ======
 const styles = StyleSheet.create({
-  /* Background & Container */
   background: {
     flex: 1,
     width: '100%',
@@ -431,12 +396,6 @@ const styles = StyleSheet.create({
   scrollContainer: {
     paddingBottom: 20,
   },
-
-  /* 
-    Bottom Blur Container 
-    (covering ~60% of screen at bottom, 
-    with 3-stop gradient for a smoother fade)
-  */
   bottomBlurContainer: {
     position: 'absolute',
     left: 0,
@@ -444,13 +403,11 @@ const styles = StyleSheet.create({
     bottom: 0,
     height: '60%',
   },
-
-  /* Blurred Profile Header */
   profileHeader: {
     marginHorizontal: 20,
     marginTop: 200,
     borderRadius: 30,
-    overflow: 'hidden', // Important for containing the blur
+    overflow: 'hidden',
   },
   profileHeaderContent: {
     alignItems: 'center',
@@ -521,13 +478,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginBottom: 20,
   },
-  /* Buttons at the bottom of the profile header */
   buttonRow: {
-    flexDirection: 'row', // Arrange items horizontally
-    justifyContent: 'center', // Center them in the container
+    flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
-    width: '80%', // Narrower container so they don't spread out too much
-    alignSelf: 'center', // Center the container itself
+    width: '80%',
+    alignSelf: 'center',
     marginTop: 14,
   },
   
@@ -536,7 +492,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 25,
-    marginHorizontal: 10, // Adds space on left/right
+    marginHorizontal: 10,
   },
   logoutButton: {
     backgroundColor: '#f44336',
@@ -553,8 +509,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
   },
-
-  /* Events Section */
   eventSection: {
     marginTop: 30,
     paddingHorizontal: 20,
@@ -574,7 +528,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     overflow: 'hidden',
     marginBottom: 20,
-    // Shadows
     shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowRadius: 8,

@@ -59,7 +59,7 @@ export default function Event({ route, navigation }: any) {
     
             const colors = await ImageColors.getColors(imageUrl, { fallback: '#000' });
     
-            let extractedColor = '#000'; // Default color
+            let extractedColor = '#000';
             if (colors.platform === 'android') {
                 extractedColor = colors.dominant || '#000';
             } else if (colors.platform === 'ios' && 'background' in colors) {
@@ -120,7 +120,6 @@ export default function Event({ route, navigation }: any) {
                     </TouchableOpacity>
                 </View>
 
-                {/* Invitees */}
                 <View style={styles.detailsContainer}>
                     <Text style={styles.sectionTitle}>Invitees</Text>
                     <Text style={styles.inviteesno}>{inviteesNumber} Invitees</Text>
@@ -136,8 +135,11 @@ export default function Event({ route, navigation }: any) {
                             </TouchableOpacity>
                         </View>
                     ))}
-                    <TouchableOpacity style={{ backgroundColor: '#007AFF', padding: 20, borderRadius: 30, alignItems: 'center', marginTop: 40, marginBottom: 30 }}>
-                        <Text style={{ fontSize: 20, color: 'white', textAlign: 'center', fontWeight: 'bold'}}>Edit</Text>
+                    <TouchableOpacity 
+                        style={{ backgroundColor: '#007AFF', padding: 20, borderRadius: 30, alignItems: 'center', marginTop: 40, marginBottom: 30 }} 
+                        onPress={() => navigation.navigate("Edit")}
+                    >
+                        <Text style={{ fontSize: 20, color: 'white', textAlign: 'center', fontWeight: 'bold' }}>Edit</Text>
                     </TouchableOpacity>
                     <Text style={styles.hostedBy}>Event ID: {id}</Text>
                     <Text style={[styles.hostedBy, { marginTop: 0 }]}>Hosted by {personName}</Text>

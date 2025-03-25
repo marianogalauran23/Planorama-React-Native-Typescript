@@ -26,13 +26,12 @@ export default function LogIn({ navigation }: any) {
         ? require("../assets/logo3dDark.png") 
         : require("../assets/logo3d.png");
 
-    // Handle StatusBar visibility
     useEffect(() => {
         StatusBar.setHidden(false);
         StatusBar.setBarStyle(colorScheme === 'dark' ? "light-content" : "dark-content");
 
         return () => {
-            StatusBar.setHidden(true); // Hide when leaving the screen
+            StatusBar.setHidden(true);
         };
     }, []);
 
@@ -40,7 +39,6 @@ export default function LogIn({ navigation }: any) {
         checkSavedLogin();
     }, []);
 
-    // Keyboard animation
     useEffect(() => {
         const keyboardShowListener = Keyboard.addListener("keyboardDidShow", (event) => {
             keyboardHeight.value = withTiming(-event.endCoordinates.height / 2, { duration: 200 });
@@ -55,6 +53,10 @@ export default function LogIn({ navigation }: any) {
             keyboardHideListener.remove();
         };
     }, []);
+
+    function SignUpScreen(){
+        navigation.navigate("SignUp");
+    };
 
     const animatedStyle = useAnimatedStyle(() => ({
         transform: [{ translateY: keyboardHeight.value }],
@@ -151,6 +153,9 @@ export default function LogIn({ navigation }: any) {
                     >
                         <Text style={styles.buttonText}>Login</Text>
                     </TouchableOpacity>
+                    <TouchableOpacity style={styles.acoount} onPress={() => SignUpScreen()}>
+                        <Text>No Account?</Text>
+                    </TouchableOpacity>
                 </View>
             </Animated.View>
         </TouchableWithoutFeedback>
@@ -228,5 +233,8 @@ const styles = StyleSheet.create({
         color: "#fff",
         fontSize: 18,
         fontWeight: "bold",
+    },
+    acoount: {
+        marginTop: 20,
     },
 });

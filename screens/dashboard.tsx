@@ -30,7 +30,6 @@ const belllighticon = require("../assets/notificationLight.png");
 const adddark = require("../assets/addIconDark.png");
 const addlight = require("../assets/addIconLight.png");
 
-// Define the type for an event item
 type EventItem = {
   id: string;
   title: string;
@@ -102,7 +101,7 @@ export default function Dashboard({ navigation }: any) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [bgUri, setBgUri] = useState(events[0].imageUrl);
   const [isDarkBackground, setIsDarkBackground] = useState(false);
-  const [isScrolling, setIsScrolling] = useState(false); // Track scrolling state
+  const [isScrolling, setIsScrolling] = useState(false);
   const scrollX = useRef(new Animated.Value(0)).current;
   const fadeAnim = useRef(new Animated.Value(1)).current;
   const lastReportedIndexRef = useRef(activeIndex);
@@ -123,7 +122,7 @@ export default function Dashboard({ navigation }: any) {
     const index = Math.round(offset / ITEM_CONTAINER_WIDTH);
     setActiveIndex(index);
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    setIsScrolling(false); // Scrolling has ended
+    setIsScrolling(false);
 
     Animated.sequence([
       Animated.timing(fadeAnim, {
@@ -134,7 +133,7 @@ export default function Dashboard({ navigation }: any) {
       }),
     ]).start(() => {
       setBgUri(events[index].imageUrl);
-      setIsDarkBackground(index % 2 === 0); // Simulated light/dark background switch
+      setIsDarkBackground(index % 2 === 0);
       Animated.timing(fadeAnim, {
         toValue: 1,
         duration: 600,
@@ -169,14 +168,14 @@ export default function Dashboard({ navigation }: any) {
   const handleCardPress = (item: EventItem) => {
   if (!isScrolling) {
     navigation.navigate("Event", {
-      eventId: item.id,  // Passing event ID
+      eventId: item.id, 
       eventTitle: item.title,
-      personName: personInfo.name, // Passing event title
+      personName: personInfo.name,
       imageUrl: item.imageUrl,
       location: item.location,
-      time: item.time,// Passing person's name
+      time: item.time,
       description: item.description ?? 'No Description',
-      id: item.id, // Passing event's location
+      id: item.id,
 
     });
     console.log('Card Pressed:', item.title);
@@ -193,7 +192,6 @@ export default function Dashboard({ navigation }: any) {
         </ImageBackground>
       </Animated.View>
 
-      {/* Header with BlurView */}
       <TouchableOpacity onPress={handleHeaderPress}>
         <BlurView intensity={50} style={styles.header}>
           <Image source={Connor} style={styles.profilepic} />
@@ -225,7 +223,7 @@ export default function Dashboard({ navigation }: any) {
         onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], {
           useNativeDriver: true,
         })}
-        onScrollBeginDrag={() => setIsScrolling(true)} // Scrolling started
+        onScrollBeginDrag={() => setIsScrolling(true)}
         onMomentumScrollEnd={onMomentumScrollEnd}
         renderItem={({ item, index }) => {
           const inputRange = [
@@ -248,7 +246,7 @@ export default function Dashboard({ navigation }: any) {
           return (
             <TouchableOpacity
               onPress={() => handleCardPress(item)}
-              activeOpacity={isScrolling ? 1 : 0.7} // Disable opacity change during scroll
+              activeOpacity={isScrolling ? 1 : 0.7}
             >
               <View style={{ width: CARD_WIDTH, alignItems: 'center' }}>
                 <Animated.View style={[styles.card, { transform: [{ scale }, { rotateY }] }]}>
@@ -265,7 +263,6 @@ export default function Dashboard({ navigation }: any) {
         }}
       />
 
-      {/* Add Button */}
       <View style={styles.circularContainer}>
         <TouchableOpacity onPress={handleAddPress} style={styles.blurBackground}>
           <BlurView intensity={20} style={styles.blurBackground}>
@@ -279,7 +276,7 @@ export default function Dashboard({ navigation }: any) {
 
 
 const styles = StyleSheet.create({
-  container: { flex: 1, paddingTop: 120 }, // Added padding to push content down
+  container: { flex: 1, paddingTop: 120 },
   overlay: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(0,0,0,0.3)',
@@ -316,7 +313,7 @@ const styles = StyleSheet.create({
   },
   header: {
     width: width * 0.9,
-    alignSelf: 'center', // Center the header
+    alignSelf: 'center',
     flexDirection: 'row',
     alignItems: 'center',
     padding: 23,
@@ -347,19 +344,19 @@ const styles = StyleSheet.create({
   circularContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 75, // Adds space from the bottom
+    marginBottom: 75,
   },
   blurBackground: {
-    width: 70, // Increased size
+    width: 70, 
     height: 70,
-    borderRadius: 40, // Keeps it circular
+    borderRadius: 40,
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
     backgroundColor: 'rgba(255, 255, 255, 0.32)',
   },
   icon: {
-    width: 25, // Adjusted to match new container size
+    width: 25,
     height: 25,
   },
 });
